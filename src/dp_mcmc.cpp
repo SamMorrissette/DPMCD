@@ -2,7 +2,6 @@
 
 // we only include RcppArmadillo.h which pulls Rcpp.h in for us
 #include "RcppArmadillo.h"
-#include <RcppDist.h>
 #include <progress.hpp>
 #include "helpers.h"
 #include "commonvars.h"
@@ -104,6 +103,7 @@ List DP_MCMC(arma::mat obs_dist,
     class_probs.slice(t) = CalculateClassProbs(p.row(t-1), means.slice(t-1), covs(t-1));
     old_probs.slice(t) = class_probs.slice(t);
     
+    //Step 4 (Label switching)
     if (t == 2000) {
       Q = InitializeQ(class_probs);
     }  else if (t > 2000) {
@@ -115,30 +115,19 @@ List DP_MCMC(arma::mat obs_dist,
       Q = UpdateQ(Q, class_probs.slice(t), t);
     }
     
-    //Step 4 (Label switching)
-    // if (t == 500) {
-    //   Q = InitializeQ(class_probs);
-    // }  else if (t > 500) {
-    //   perms = UndoLabelSwitching(Q, class_probs.slice(t));
-    //   perm_mat.row(t) = arma::conv_to<arma::rowvec>::from(perms);
-    //   for (int k = 0; k < num_comps; k++) {
-    //     class_probs.slice(t).col(k) = class_probs.slice(t).col(perms(k)-1);
-    //   }
-    //   Q = UpdateQ(Q, class_probs.slice(t), t);
-    // }
-
+    // Step 5 (update allocations) 
     z.row(t) = UpdateClasses(class_probs.slice(t));
 
-    // Step 5 (update stick-breaking weights) 
+    // Step 6 (update stick-breaking weights) 
     b = StickBreaking(z.row(t), alpha(t-1));
     p.row(t) = UpdateWeights(b);
     
-    // Step 6 (Update model parameters)
+    // Step 7 (Update model parameters)
     newParams = UpdateTheta(z.row(t), modelIndex);
     means.slice(t) = newParams.mean;
     covs(t) = newParams.covariance;
 
-    // Step 7 (Update alpha)
+    // Step 8 (Update alpha)
     alpha(t) = UpdateAlpha(b);
   }
   

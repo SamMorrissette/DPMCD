@@ -8,8 +8,7 @@ DPMCD <- function(distances, max_p, parallel, K = 25,
   modelIndices <- match(modelNames, allModels)
   
   # Initial run of BMDS for initialization and dimension estimation
-  BMDS_out <- RunBMDS(distances, max_p, parallel=parallel) 
-  plot(BMDS_out$mdsics)
+  BMDS_out <- RunBMDS(distances, max_p, parallel=parallel)
   p <- 3 #which.min(BMDS_out$mdsics)
   X_est <- BMDS_out$X[[p]]
   sigmasq_est <- BMDS_out$sigma_sq[[p]]
