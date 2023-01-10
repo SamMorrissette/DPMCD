@@ -1,1 +1,15 @@
-Dirichlet Process Mixtures for Clustering with Dissimilarities
+# Parsimonious Dirichlet Process Mixtures for Clustering with Dissimilarities
+
+## Overview
+This R package provides an implementation of the Parsimonious Dirichlet Process Mixtures for Clustering with Dissimilarities (PDPMCD) method. All calculations and Markov Chain Monte Carlo (MCMC) sampling methods are implemented in C++ to reduce required computation time. In its current state, there are only two different available mixture models, but updated versions of the package will have several available models along with a model selection criteria (Bayes Factor? Conditional Predictive Ordinate? Pseudo Marginal Likelihood?) to select a final model.
+
+The input to the main function (DPMCD) is a dissimilarity matrix. First, Bayesian Multidimensional Scaling (BMDS) (Oh and Raftery, 2001) is used to estimate the dimension (denoted p) and configuration of the observations in p-dimensional Euclidean space. The estimated dimension and configuration is used to initialize the PDPMCD method, which clusters the data using a Dirichlet process mixture model (with the baseline distribution being multivariate normal) and automatically infers an appropriate number of clusters. This approach is advantageous in comparison to conventional methods, since one does not need to specify in advance the number of clusters. A hyperprior is placed on the concentration parameter of the Dirichlet process prior, so that the user does not need to specify this parameter. Furthermore, the method is able to estimate the measurement error that may be present within the observed data, and updates the configuration of observations within each iteration.
+
+## MCMC Sampling
+The MCMC sampling from the posterior distribution is implemented using the blocked Gibbs sampling method outlined in Ishwaran and James (2001). This sampling approach is based on the stick-breaking construction of the Dirichlet process (Sethuraman, 1994) and uses a truncation approximation. By default, this package uses a truncation level of 25 clusters, as recommended in the third edition of Bayesian Data Analysis (Gelman et al., 2013). 
+
+### Label-switching
+Due to invariance of the likelihood under permutations of the clustering labels in Bayesian mixture models (known as the label-switching problem), the approach outlined in Section 6.2 of Stephens (2000) is implemented within the package. Unlike other algorithms that rely on post-processing of the samples, this approach permutes data appropriately directly within the sampling. This method uses the Kullback-Leibler (KL) divergence measure to undo any label-switches that may occur during MCMC sampling. In each iteration, a cost matrix is constructed and minimized by choosing an appropriate permutation. Coincidentally, this problem turns out to be equivalent to the assignment problem, for which an solution exists in the form of the Hungarian algorithm (Kuhn, 1955). Here, we use RcppHungarian package to find a solution to the assignment problem in each iteration of MCMC. 
+
+
+
