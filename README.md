@@ -11,5 +11,5 @@ The MCMC sampling from the posterior distribution is implemented using the block
 ### Label-switching
 Due to invariance of the likelihood under permutations of the clustering labels in Bayesian mixture models (known as the label-switching problem), the approach outlined in Section 6.2 of Stephens (2000) is implemented within the package. Unlike other algorithms that rely on post-processing of the samples, this approach permutes labels directly within the sampling. This method uses the Kullback-Leibler (KL) divergence measure to undo any label-switches that may occur during MCMC sampling. In each iteration, a cost matrix is constructed and minimized by choosing an appropriate permutation. Coincidentally, this problem turns out to be equivalent to the assignment problem, for which an solution exists in the form of the Hungarian algorithm (Kuhn, 1955). Here, we use RcppHungarian package to find a solution to the assignment problem in each iteration of MCMC. 
 
-![Clustering Example](images/clustering.jpeg "Clustering with PDPMCD (Spherical)")
+![Clustering Example](images/clustering.png "Clustering with PDPMCD (Spherical)")
 
