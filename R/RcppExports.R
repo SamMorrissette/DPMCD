@@ -53,6 +53,10 @@ bmdsMCMC <- function(DIST, p, nwarm = 1000L, niter = 5000L) {
     .Call(`_DPMCD_bmdsMCMC`, DIST, p, nwarm, niter)
 }
 
+CalcLPML <- function(dpobj) {
+    .Call(`_DPMCD_CalcLPML`, dpobj)
+}
+
 dmvnrm_arma_fast <- function(x, mean, sigma, logd = FALSE) {
     .Call(`_DPMCD_dmvnrm_arma_fast`, x, mean, sigma, logd)
 }

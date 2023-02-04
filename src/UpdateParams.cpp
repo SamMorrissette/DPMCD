@@ -93,9 +93,24 @@ Params UpdateTheta(arma::rowvec z, int modelIndex) {
         params_out = DrawUnequalSpherical(z);
         break;
       }
-    case 3:
+    case 3: // Unequal Diagonal;
       {
-        printf("Uhoh3!");
+        params_out = DrawUnequalDiagonal(z);
+        break;
+      }
+    case 4: // Equal Unrestricted;
+      { 
+        params_out = DrawEqualUnrestricted(z);
+        break;
+      }
+    case 5: // Equal Spherical;
+      {
+        params_out = DrawEqualSpherical(z);
+        break;
+      }
+    case 6: // Equal Diagonal;
+      {
+        params_out = DrawEqualDiagonal(z);
         break;
       }
   }

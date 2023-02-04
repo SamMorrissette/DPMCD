@@ -35,9 +35,9 @@ arma::rowvec NormalizeRow(arma::rowvec x) {
 
 arma::mat InitializeQ(arma::cube class_probs) {
   arma::mat Q(n, num_comps);
-  int switch_iters = 2000;
+  int switch_iters = 100;
   
-  for (int m = 1500; m < switch_iters; m++) {
+  for (int m = 0; m < switch_iters; m++) {
     for (int i = 0; i < n; i++) {
       class_probs.slice(m).row(i) = NormalizeRow(class_probs.slice(m).row(i));
     }
@@ -45,12 +45,12 @@ arma::mat InitializeQ(arma::cube class_probs) {
 
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < num_comps; j++) {
-      for (int m = 1500; m < switch_iters; m++) {
+      for (int m = 0; m < switch_iters; m++) {
         Q(i, j) += class_probs.slice(m)(i, j);
       }
     }
   }
-  Q = Q / (switch_iters-1500);
+  Q = Q / (switch_iters-0);
   return Q;
 }
 
@@ -108,7 +108,7 @@ arma::uvec UndoLabelSwitching(arma::mat Q, arma::mat prob_mat) {
 
 arma::mat UpdateQ(arma::mat Q, arma::mat perm_prob_mat, int t) {
   arma::mat new_Q(num_comps, num_comps, arma::fill::zeros);
-  t = (double) (t - 2000);
+  t = (double) (t - 100);
   new_Q = ((t*Q) + perm_prob_mat) / (t+1);
   return new_Q;
 }

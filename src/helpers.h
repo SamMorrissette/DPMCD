@@ -40,6 +40,10 @@ double UpdateAlpha(Rcpp::NumericVector b);
 Params UpdateTheta(arma::rowvec z, int modelIndex);
 Params DrawUnequalUnrestricted(arma::rowvec z);
 Params DrawUnequalSpherical(arma::rowvec z);
+Params DrawUnequalDiagonal(arma::rowvec z);
+Params DrawEqualUnrestricted(arma::rowvec z);
+Params DrawEqualSpherical(arma::rowvec z);
+Params DrawEqualDiagonal(arma::rowvec z);
 
 // Label switching
 arma::mat InitializeQ(arma::cube class_probs);

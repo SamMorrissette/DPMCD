@@ -47,8 +47,9 @@ List DP_MCMC(arma::mat obs_dist,
   mu0 = arma::vec(dim, arma::fill::zeros);
   nu0 = dim+2;
   S = arma::mat(dim, dim, arma::fill::eye);
-  kappa = 0.01;
+  kappa = 0.1;
   //S = ((nu0 - dim - 1) * arma::cov(init_X)) / 4;
+  //S = arma::cov(init_X);
   
   // Priors for IG (US model)
   arma::mat cov_X_init = cov(X_mat);
@@ -104,9 +105,9 @@ List DP_MCMC(arma::mat obs_dist,
     old_probs.slice(t) = class_probs.slice(t);
     
     //Step 4 (Label switching)
-    if (t == 2000) {
+    if (t == 100) {
       Q = InitializeQ(class_probs);
-    }  else if (t > 2000) {
+    }  else if (t > 100) {
       perms = UndoLabelSwitching(Q, class_probs.slice(t));
       perm_mat.row(t) = arma::conv_to<arma::rowvec>::from(perms);
       for (int k = 0; k < num_comps; k++) {

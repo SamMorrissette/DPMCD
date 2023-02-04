@@ -36,6 +36,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// CalcLPML
+double CalcLPML(List dpobj);
+RcppExport SEXP _DPMCD_CalcLPML(SEXP dpobjSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type dpobj(dpobjSEXP);
+    rcpp_result_gen = Rcpp::wrap(CalcLPML(dpobj));
+    return rcpp_result_gen;
+END_RCPP
+}
 // dmvnrm_arma_fast
 arma::vec dmvnrm_arma_fast(arma::mat const& x, arma::rowvec const& mean, arma::mat const& sigma, bool const logd);
 RcppExport SEXP _DPMCD_dmvnrm_arma_fast(SEXP xSEXP, SEXP meanSEXP, SEXP sigmaSEXP, SEXP logdSEXP) {
@@ -70,6 +81,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_DPMCD_distRcpp", (DL_FUNC) &_DPMCD_distRcpp, 1},
     {"_DPMCD_bmdsMCMC", (DL_FUNC) &_DPMCD_bmdsMCMC, 4},
+    {"_DPMCD_CalcLPML", (DL_FUNC) &_DPMCD_CalcLPML, 1},
     {"_DPMCD_dmvnrm_arma_fast", (DL_FUNC) &_DPMCD_dmvnrm_arma_fast, 4},
     {"_DPMCD_DP_MCMC", (DL_FUNC) &_DPMCD_DP_MCMC, 6},
     {NULL, NULL, 0}

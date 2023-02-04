@@ -2,11 +2,11 @@
 #' @importFrom doParallel registerDoParallel
 #' @export
 
-RunBMDS <- function(distances, max_p, parallel = FALSE) {
-  bmds_burn = 100
-  bmds_iter = 500
+RunBMDS <- function(distances, max_p, parallel = FALSE, cores) {
+  bmds_burn = 1000
+  bmds_iter = 5000
   if(parallel == TRUE) {
-    doParallel::registerDoParallel(cores=12)
+    doParallel::registerDoParallel(cores=cores)
   }
   n <- nrow(distances)
   
@@ -26,7 +26,7 @@ RunBMDS <- function(distances, max_p, parallel = FALSE) {
       lapply(seq_along(x),
              function(i) c(x[[i]], lapply(list(...), function(y) y[[i]])))
     }
-    out_list <- foreach::foreach(j=1:max_p, .packages ="BMCD", .combine='comb', .multicombine=TRUE, .init=list(list(), list())) %dopar% {
+    out_list <- foreach::foreach(j=1:max_p, .packages ="DPMCD", .combine='comb', .multicombine=TRUE, .init=list(list(), list())) %dopar% {
       output <- bmdsMCMC(distances, j, nwarm = bmds_burn, niter = bmds_iter)
       list(output$x_bmds, output$e_sigma)
     }
