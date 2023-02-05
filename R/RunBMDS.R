@@ -33,6 +33,11 @@ RunBMDS <- function(distances, max_p, parallel = FALSE, cores) {
     X <- out_list[[1]]
     sigma_sq <- out_list[[2]]
   }
+  
+  if(parallel == TRUE) {
+    doParallel::stopImplicitCluster()
+  }
+  
   mdsics <- MDSIC(distances, X)
   
   return(list(X = X,
