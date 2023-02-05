@@ -5,9 +5,11 @@
 RunBMDS <- function(distances, max_p, parallel = FALSE, cores) {
   bmds_burn = 1000
   bmds_iter = 5000
+  print("Starting register BMDS")
   if(parallel == TRUE) {
     doParallel::registerDoParallel(cores=cores)
   }
+  print("Finished register BMDS")
   n <- nrow(distances)
   
   X <- vector("list", length = max_p)
@@ -26,10 +28,12 @@ RunBMDS <- function(distances, max_p, parallel = FALSE, cores) {
       lapply(seq_along(x),
              function(i) c(x[[i]], lapply(list(...), function(y) y[[i]])))
     }
+    print("Starting parallel BMDS")
     out_list <- foreach::foreach(j=1:max_p, .packages ="DPMCD", .combine='comb', .multicombine=TRUE, .init=list(list(), list())) %dopar% {
       output <- bmdsMCMC(distances, j, nwarm = bmds_burn, niter = bmds_iter)
       list(output$x_bmds, output$e_sigma)
     }
+    print("Ending parallel BMDS")
     X <- out_list[[1]]
     sigma_sq <- out_list[[2]]
   }
@@ -37,7 +41,7 @@ RunBMDS <- function(distances, max_p, parallel = FALSE, cores) {
   if(parallel == TRUE) {
     doParallel::stopImplicitCluster()
   }
-  
+  print("Ending BMDS")
   mdsics <- MDSIC(distances, X)
   
   return(list(X = X,
