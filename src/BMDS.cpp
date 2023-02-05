@@ -210,6 +210,7 @@ extern "C" SEXP bmdsMCMC(SEXP DIST, SEXP p, int nwarm= 1000, int niter=5000){
   
   
   for(iter=0; iter<totiter;iter++){
+    printf('iter %i', iter):
     x_sv = x;
     for(i=0;i<n; i++){
       cd_var = scale * sigma/(n-1)*rI_p;
