@@ -1,4 +1,5 @@
 #' @importFrom foreach %dopar% foreach
+#' @importFrom foreach getDoParRegistered
 #' @importFrom doParallel registerDoParallel
 #' @export
 
@@ -6,7 +7,7 @@ RunBMDS <- function(distances, max_p, parallel = FALSE, cores) {
   bmds_burn = 1000
   bmds_iter = 5000
   print("Starting register BMDS")
-  if(parallel == TRUE) {
+  if(parallel == TRUE & !getDoParRegistered()) {
     doParallel::registerDoParallel(cores=cores)
   }
   print("Finished register BMDS")
