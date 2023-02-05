@@ -29,7 +29,6 @@ RunDPM <- function(distances, init_X, init_sigmasq, K, burn, iters, modelIndices
       dpobj <- DP_MCMC(distances, init_X, init_sigmasq, K, iters, modelIndices[j])
       output <- createOutput(dpobj, init_X, burn, iters)
     }
-    doParallel::stopImplicitCluster()
   }
   
   return(allModels)

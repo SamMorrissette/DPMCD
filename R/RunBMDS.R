@@ -31,16 +31,14 @@ RunBMDS <- function(distances, max_p, parallel = FALSE, cores) {
     }
     print("Starting parallel BMDS")
     out_list <- foreach::foreach(j=1:max_p, .packages ="DPMCD", .combine='comb', .multicombine=TRUE, .init=list(list(), list())) %dopar% {
+      print("Starting within parallel")
       output <- bmdsMCMC(distances, j, nwarm = bmds_burn, niter = bmds_iter)
+      print("ending within parallel")
       list(output$x_bmds, output$e_sigma)
     }
     print("Ending parallel BMDS")
     X <- out_list[[1]]
     sigma_sq <- out_list[[2]]
-  }
-  
-  if(parallel == TRUE) {
-    doParallel::stopImplicitCluster()
   }
   print("Ending BMDS")
   mdsics <- MDSIC(distances, X)
