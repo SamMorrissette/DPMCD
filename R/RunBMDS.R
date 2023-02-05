@@ -4,8 +4,6 @@
 #' @export
 
 RunBMDS <- function(distances, max_p, parallel = FALSE, cores) {
-  bmds_burn = 1000
-  bmds_iter = 5000
   print("Starting register BMDS")
   if(parallel == TRUE & !getDoParRegistered()) {
     doParallel::registerDoParallel(cores=cores)
@@ -17,6 +15,8 @@ RunBMDS <- function(distances, max_p, parallel = FALSE, cores) {
   sigma_sq <- vector("list", length = max_p)
   
   if (parallel == FALSE) {
+    bmds_burn = 1000
+    bmds_iter = 5000
     for (i in 1:max_p) {
       # Doesn't include delta matrix (reduce memory required)
       temp_bmds <- bmdsMCMC(DIST = distances, p = i, nwarm = bmds_burn, niter = bmds_iter)
@@ -31,8 +31,12 @@ RunBMDS <- function(distances, max_p, parallel = FALSE, cores) {
     }
     print("Starting parallel BMDS")
     out_list <- foreach::foreach(j=1:max_p, .packages ="DPMCD", .combine='comb', .multicombine=TRUE, .init=list(list(), list())) %dopar% {
+      bmds_burn = 1000
+      bmds_iter = 5000
+      print(paste("I am", j))
+      print(distances)
       print("Starting within parallel")
-      output <- bmdsMCMC(distances, j, nwarm = bmds_burn, niter = bmds_iter)
+      output <- bmdsMCMC(DIST = distances, p = j, nwarm = bmds_burn, niter = bmds_iter)
       print("ending within parallel")
       list(output$x_bmds, output$e_sigma)
     }
