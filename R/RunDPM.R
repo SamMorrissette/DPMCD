@@ -22,7 +22,9 @@ RunDPM <- function(distances, init_X, init_sigmasq, K, burn, iters, modelIndices
       allModels[[i]] <- createOutput(dpobj, init_X, burn, iters)
     }
   } else if (parallel == TRUE) {
-    doParallel::registerDoParallel(cores=cores)
+    if (!foreach::getDoParRegistered()) {
+      doParallel::registerDoParallel(cores=cores)
+    }
     allModels <- foreach::foreach(j=1:length(modelIndices), .packages ="DPMCD") %dopar% {
       dpobj <- DP_MCMC(distances, init_X, init_sigmasq, K, iters, modelIndices[j])
       output <- createOutput(dpobj, init_X, burn, iters)
