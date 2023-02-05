@@ -120,6 +120,7 @@ arma::mat rg(const arma::mat& w,double scale,int num) {
 // [[Rcpp::export]]
 
 extern "C" SEXP bmdsMCMC(SEXP DIST, SEXP p, int nwarm= 1000, int niter=5000){
+  printf("Okay, now i'm in this function");
   Rcpp::NumericMatrix DISTc(DIST);
   int pc = Rcpp::as<int> (p);
   
@@ -192,6 +193,7 @@ extern "C" SEXP bmdsMCMC(SEXP DIST, SEXP p, int nwarm= 1000, int niter=5000){
   alpha_lam = 0.5;
   arma::vec beta_lam = 0.5*Sig_x.diag();
   
+  printf("Going to start MCMC soon!");
   
   // START MCMC
   s_sigma = 0;
