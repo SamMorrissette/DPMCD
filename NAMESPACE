@@ -1,6 +1,7 @@
 useDynLib(DPMCD, .registration=TRUE)
 importFrom(Rcpp, evalCpp)
 importFrom(doParallel,registerDoParallel)
+importFrom(foreach,getDoParRegistered)
 importFrom(foreach,"%dopar%")
 importFrom(foreach,foreach)
 exportPattern("^[[:alpha:]]+")
