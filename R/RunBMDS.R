@@ -30,10 +30,7 @@ RunBMDS <- function(distances, max_p, parallel = FALSE, cores) {
     out_list <- foreach::foreach(j=1:max_p, .packages ="DPMCD", .combine='comb', .multicombine=TRUE, .init=list(list(), list())) %dopar% {
       bmds_burn = 1000
       bmds_iter = 5000
-      print(paste("I am", j))
-      print("Starting within parallel")
       output <- bmdsMCMC(DIST = distances, p = j, nwarm = bmds_burn, niter = bmds_iter)
-      print("ending within parallel")
       list(output$x_bmds, output$e_sigma)
     }
     X <- out_list[[1]]
