@@ -47,7 +47,7 @@ List DP_MCMC(arma::mat obs_dist,
   mu0 = arma::vec(dim, arma::fill::zeros);
   nu0 = dim+2;
   S = arma::mat(dim, dim, arma::fill::eye);
-  kappa = 0.1;
+  kappa = 1;
   //S = ((nu0 - dim - 1) * arma::cov(init_X)) / 4;
   //S = arma::cov(init_X);
   
