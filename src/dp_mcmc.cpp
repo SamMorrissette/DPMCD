@@ -46,10 +46,10 @@ List DP_MCMC(arma::mat obs_dist,
   // Priors for NIW (UU model)
   mu0 = arma::vec(dim, arma::fill::zeros);
   nu0 = dim+2;
-  S = arma::mat(dim, dim, arma::fill::eye);
-  kappa = 1;
+  //S = arma::mat(dim, dim, arma::fill::eye);
   //S = ((nu0 - dim - 1) * arma::cov(init_X)) / 4;
-  //S = arma::cov(init_X);
+  kappa = 1;
+  S = arma::cov(init_X);
   
   // Priors for IG (US model)
   arma::mat cov_X_init = cov(X_mat);
@@ -130,6 +130,7 @@ List DP_MCMC(arma::mat obs_dist,
 
     // Step 8 (Update alpha)
     alpha(t) = UpdateAlpha(b);
+    //alpha(t) = 1;
   }
   
   return List::create(

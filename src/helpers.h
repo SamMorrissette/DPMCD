@@ -29,6 +29,7 @@ double UpdateSigmasq(arma::mat obs_distances, arma::mat current_X, double s_res,
 arma::mat CalculateClassProbs(arma::rowvec p,
                                  arma::mat mean,
                                  arma::cube cov);
+
 arma::rowvec UpdateClasses(arma::mat prob_mat);
 
 Rcpp::NumericVector StickBreaking(arma::rowvec z, double alpha);

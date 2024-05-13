@@ -53,16 +53,30 @@ arma::rowvec UpdateClasses(arma::mat prob_mat) {
 
 NumericVector StickBreaking(arma::rowvec z, double alpha) {
   NumericVector out_vec(num_comps);
+  //Rprintf("%f \n", alpha);
   int n_k;
   double total = 0;
+  double gamma1, gamma2;
   arma::uvec pos;
   for (int k = 0; k < (num_comps-1); k++) {
     pos = find(z == k+1);
     n_k = pos.n_elem;
     total += n_k;
+    
+ 
+    
     out_vec(k) = R::rbeta(1+n_k, alpha + (n-total));
+    
+    
+    
+    
+    //gamma1 = as<double>(wrap(arma::randg(arma::distr_param(1+n_k, 1))));
+    //gamma2 = as<double>(wrap(arma::randg(arma::distr_param(alpha+(n-total), 1.0))));
+    //out_vec(k) = gamma1 / (gamma1+gamma2);
+    //Rprintf("%f out_vec \n", out_vec(k));
   }
   out_vec(num_comps-1) = 1;
+
   return out_vec;
 }
 
@@ -119,20 +133,36 @@ Params UpdateTheta(arma::rowvec z, int modelIndex) {
 
 double UpdateAlpha(NumericVector b) {
   double alpha, sum_logs, pst_rate;
-  sum_logs = 0;
-  
-  for (int i = 0; i < (num_comps-1); i++) {
-    sum_logs += log(1-b(i));
-  }
-  
-  pst_rate = prior_rate - sum_logs;
-  try{
-    alpha = as<double>(wrap(arma::randg(1, arma::distr_param(prior_shape + num_comps - 1, 1/pst_rate))));
-  } catch(...) {
-    
-    warning("Uhoh!");
-    alpha = 1;
-  }
+  alpha = 1;
+  // sum_logs = 0;
+  // 
+  // for (int i = 0; i < (num_comps-1); i++) {
+  //   sum_logs += log(1-b(i));
+  // }
+  // //Rprintf("%f \n", sum_logs);
+  // 
+  // pst_rate = prior_rate - sum_logs;
+  // //when most of the observations are allocated to a single cluster, then the stick weight, b(i),
+  // //will be close to 1 for that cluster. 
+  // 
+  // //when b(i) is close to 1, then sum_logs is large and negative which makes pst_rate very high and alpha very small
+  // 
+  // //when alpha is very small, then the stick breaking weight for a component might be 1 (i.e. b(i) = 1) and then when 
+  // //you calculate log(1-1) = -Inf
+  // 
+  // //
+  // try{
+  //   alpha = as<double>(wrap(arma::randg(1, arma::distr_param(prior_shape + num_comps - 1, 1/pst_rate))));
+  // } catch(...) {
+  //   // for (int i = 0; i < (num_comps-1); i++) {
+  //   //   Rprintf("%f \n", b(i));
+  //   // }
+  //   Rprintf("sum_logs %f \n", sum_logs);
+  //   Rprintf("pst_rate %f \n", pst_rate);
+  //   warning("Error!");
+  //   stop("error!");
+  //   alpha = 1;
+  // }
   return alpha;
 }
 
