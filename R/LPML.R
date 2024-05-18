@@ -4,6 +4,7 @@ LPML <- function(dp_object) {
   for (i in 1:num_models) {
     # This is to ensure proper conversion to armadillo cubes
     print(dp_object[[i]])
+    print(dp_object[[i]]$BMDS_X)
     dim = ncol(dp_object[[i]]$BMDS_X)
     print(dim)
     if (dim == 1) {
