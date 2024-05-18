@@ -3,7 +3,9 @@ LPML <- function(dp_object) {
   LPML_vec <- rep(NA, num_models)
   for (i in 1:num_models) {
     # This is to ensure proper conversion to armadillo cubes
+    print(dp_object[[i]]$BMDS_X)
     dim = ncol(dp_object[[i]]$BMDS_X)
+    print(dim)
     if (dim == 1) {
       dp_object[[i]]$X <- simplify2array(lapply(seq_len(ncol(dp_object[[i]]$X)), 
              function(t) dp_object[[i]]$X[,t,drop=FALSE]))

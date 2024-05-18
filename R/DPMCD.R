@@ -25,7 +25,7 @@ DPMCD <- function(distances, max_p, K = 25,
   p <- which.min(BMDS_out$mdsics)
   X_est <- BMDS_out$X[[p]]
   sigmasq_est <- BMDS_out$sigma_sq[[p]]
-  print(p)
+  print(paste("Dimension:", p))
   print("Done running BMDS, starting DPM")
   
   # Run Dirichlet Process Mixture Model
