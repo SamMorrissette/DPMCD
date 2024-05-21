@@ -1,7 +1,7 @@
 DPMCD <- function(distances, max_p, K = 25, 
                   burn = 1000, iters = 5000, 
                   modelNames = c("UU", "US", "UD", "EU", "ES", "ED"),
-                  parallel = FALSE, cores) {
+                  parallel = FALSE, cores, seed = 1) {
   
   match.arg(modelNames, several.ok = TRUE)
   
@@ -21,7 +21,7 @@ DPMCD <- function(distances, max_p, K = 25,
   
   # Initial run of BMDS for initialization and dimension estimation
   BMDS_out <- RunBMDS(distances, max_p, 
-                      parallel = parallel, cores = cores)
+                      parallel = parallel, cores = cores, seed = seed)
   p <- which.min(BMDS_out$mdsics)
   X_est <- BMDS_out$X[[p]]
   sigmasq_est <- BMDS_out$sigma_sq[[p]]
@@ -30,7 +30,7 @@ DPMCD <- function(distances, max_p, K = 25,
   
   # Run Dirichlet Process Mixture Model
   DPM_out <- RunDPM(distances, X_est, sigmasq_est, K, burn, iters, modelIndices, 
-                    parallel = parallel, cores = cores)
+                    parallel = parallel, cores = cores, seed = seed)
   
   # Add model names to each element of the list
   for (i in 1:length(modelNames)) {
