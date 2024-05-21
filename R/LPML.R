@@ -9,9 +9,8 @@ LPML <- function(dp_object) {
                                                 function(t) dp_object[[i]]$X[,t,drop=FALSE]))
       dp_object[[i]]$means <- simplify2array(lapply(seq_len(ncol(dp_object[[i]]$means)), 
                                                     function(t) t(dp_object[[i]]$means[,t])))
-      }
-
-
+    }
+    
     LPML_vec[i] <- CalcLPML(dp_object[[i]])
   }
   return(LPML_vec)

@@ -3,7 +3,7 @@
 #' @importFrom doParallel registerDoParallel
 #' @export
 
-RunBMDS <- function(distances, max_p, parallel = FALSE, cores) {
+RunBMDS <- function(distances, max_p, parallel = FALSE, cores, seed) {
   if(parallel == TRUE & !getDoParRegistered()) {
     doParallel::registerDoParallel(cores=cores)
   }
@@ -28,6 +28,7 @@ RunBMDS <- function(distances, max_p, parallel = FALSE, cores) {
              function(i) c(x[[i]], lapply(list(...), function(y) y[[i]])))
     }
     out_list <- foreach::foreach(j=1:max_p, .packages ="DPMCD", .combine='comb', .multicombine=TRUE, .init=list(list(), list())) %dopar% {
+      set.seed(seed*2)
       bmds_burn = 1000
       bmds_iter = 5000
       output <- bmdsMCMC(DIST = distances, p = j, nwarm = bmds_burn, niter = bmds_iter)
