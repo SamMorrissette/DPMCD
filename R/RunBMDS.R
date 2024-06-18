@@ -1,6 +1,7 @@
 #' @importFrom foreach %dopar% foreach
 #' @importFrom foreach getDoParRegistered
 #' @importFrom doParallel registerDoParallel
+#' @importFrom doRNG %dorng%
 #' @export
 
 RunBMDS <- function(distances, max_p, parallel = FALSE, cores, seed) {
@@ -27,8 +28,8 @@ RunBMDS <- function(distances, max_p, parallel = FALSE, cores, seed) {
       lapply(seq_along(x),
              function(i) c(x[[i]], lapply(list(...), function(y) y[[i]])))
     }
-    out_list <- foreach::foreach(j=1:max_p, .packages ="DPMCD", .combine='comb', .multicombine=TRUE, .init=list(list(), list())) %dopar% {
-      set.seed(seed*2)
+    set.seed(seed)
+    out_list <- foreach::foreach(j=1:max_p, .packages ="DPMCD", .combine='comb', .multicombine=TRUE, .init=list(list(), list())) %dorng% {
       bmds_burn = 1000
       bmds_iter = 5000
       output <- bmdsMCMC(DIST = distances, p = j, nwarm = bmds_burn, niter = bmds_iter)
