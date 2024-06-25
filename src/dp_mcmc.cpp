@@ -10,7 +10,7 @@ arma::mat X_mat;
 int n, dim, num_comps, num_iters;
 double sigmasq_prior_shape;
 double sigmasq_prior_scale;
-const double prior_shape = 4, prior_rate = 2;
+const double prior_shape = 5, prior_rate = 5;
 arma::vec mu0;
 arma::mat S;
 double nu0, kappa;
