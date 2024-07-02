@@ -133,15 +133,15 @@ Params UpdateTheta(arma::rowvec z, int modelIndex) {
 
 double UpdateAlpha(NumericVector b) {
   double alpha, sum_logs, pst_shape, pst_rate;
-  alpha = 1;
-  // 
-  // sum_logs = 0;
-  // for (int i = 0; i < (num_comps-2); i++) {
-  //   sum_logs += log(1-b(i));
-  // }
-  // pst_shape = prior_shape + num_comps - 1;
-  // pst_rate = prior_rate - sum_logs;
-  // alpha = R::rgamma(pst_shape, 1.0/pst_rate);
+  // alpha = 1;
+
+  sum_logs = 0;
+  for (int i = 0; i < (num_comps-2); i++) {
+    sum_logs += log(1-b(i));
+  }
+  pst_shape = prior_shape + num_comps - 1;
+  pst_rate = prior_rate - sum_logs;
+  alpha = R::rgamma(pst_shape, 1.0/pst_rate);
   return alpha;
 }
 
