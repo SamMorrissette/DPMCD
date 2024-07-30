@@ -28,7 +28,7 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 List DP_MCMC(arma::mat obs_dist, 
              arma::mat init_X, double init_sigmasq, 
-             const int K, const int iters,
+             const int K, const double alphaVal, const int iters,
              int modelIndex) {
   
   // Global variables used in other files
@@ -129,8 +129,8 @@ List DP_MCMC(arma::mat obs_dist,
     covs(t) = newParams.covariance;
 
     // Step 8 (Update alpha)
-    alpha(t) = UpdateAlpha(b);
-    //alpha(t) = 1;
+    // alpha(t) = UpdateAlpha(b);
+    alpha(t) = alphaVal;
   }
   
   return List::create(

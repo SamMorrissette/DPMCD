@@ -1,4 +1,4 @@
-DPMCD <- function(distances, max_p, K = 25, 
+DPMCD <- function(distances, max_p, K = 25, alpha = 1, 
                   burn = 1000, iters = 5000, 
                   modelNames = c("UU", "US", "UD", "EU", "ES", "ED"),
                   parallel = FALSE, cores, seed = 1) {
@@ -29,7 +29,7 @@ DPMCD <- function(distances, max_p, K = 25,
   print("Done running BMDS, starting DPM")
   
   # Run Dirichlet Process Mixture Model
-  DPM_out <- RunDPM(distances, X_est, sigmasq_est, K, burn, iters, modelIndices, 
+  DPM_out <- RunDPM(distances, X_est, sigmasq_est, K, alpha = alpha, burn, iters, modelIndices, 
                     parallel = parallel, cores = cores, seed = seed)
   
   # Add model names to each element of the list

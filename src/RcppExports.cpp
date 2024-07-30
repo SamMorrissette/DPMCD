@@ -62,8 +62,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // DP_MCMC
-List DP_MCMC(arma::mat obs_dist, arma::mat init_X, double init_sigmasq, const int K, const int iters, int modelIndex);
-RcppExport SEXP _DPMCD_DP_MCMC(SEXP obs_distSEXP, SEXP init_XSEXP, SEXP init_sigmasqSEXP, SEXP KSEXP, SEXP itersSEXP, SEXP modelIndexSEXP) {
+List DP_MCMC(arma::mat obs_dist, arma::mat init_X, double init_sigmasq, const int K, const double alphaVal, const int iters, int modelIndex);
+RcppExport SEXP _DPMCD_DP_MCMC(SEXP obs_distSEXP, SEXP init_XSEXP, SEXP init_sigmasqSEXP, SEXP KSEXP, SEXP alphaValSEXP, SEXP itersSEXP, SEXP modelIndexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -71,9 +71,10 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::mat >::type init_X(init_XSEXP);
     Rcpp::traits::input_parameter< double >::type init_sigmasq(init_sigmasqSEXP);
     Rcpp::traits::input_parameter< const int >::type K(KSEXP);
+    Rcpp::traits::input_parameter< const double >::type alphaVal(alphaValSEXP);
     Rcpp::traits::input_parameter< const int >::type iters(itersSEXP);
     Rcpp::traits::input_parameter< int >::type modelIndex(modelIndexSEXP);
-    rcpp_result_gen = Rcpp::wrap(DP_MCMC(obs_dist, init_X, init_sigmasq, K, iters, modelIndex));
+    rcpp_result_gen = Rcpp::wrap(DP_MCMC(obs_dist, init_X, init_sigmasq, K, alphaVal, iters, modelIndex));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -83,7 +84,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_DPMCD_bmdsMCMC", (DL_FUNC) &_DPMCD_bmdsMCMC, 4},
     {"_DPMCD_CalcLPML", (DL_FUNC) &_DPMCD_CalcLPML, 1},
     {"_DPMCD_dmvnrm_arma_fast", (DL_FUNC) &_DPMCD_dmvnrm_arma_fast, 4},
-    {"_DPMCD_DP_MCMC", (DL_FUNC) &_DPMCD_DP_MCMC, 6},
+    {"_DPMCD_DP_MCMC", (DL_FUNC) &_DPMCD_DP_MCMC, 7},
     {NULL, NULL, 0}
 };
 

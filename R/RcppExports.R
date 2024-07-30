@@ -61,7 +61,7 @@ dmvnrm_arma_fast <- function(x, mean, sigma, logd = FALSE) {
     .Call(`_DPMCD_dmvnrm_arma_fast`, x, mean, sigma, logd)
 }
 
-DP_MCMC <- function(obs_dist, init_X, init_sigmasq, K, iters, modelIndex) {
-    .Call(`_DPMCD_DP_MCMC`, obs_dist, init_X, init_sigmasq, K, iters, modelIndex)
+DP_MCMC <- function(obs_dist, init_X, init_sigmasq, K, alphaVal, iters, modelIndex) {
+    .Call(`_DPMCD_DP_MCMC`, obs_dist, init_X, init_sigmasq, K, alphaVal, iters, modelIndex)
 }
 

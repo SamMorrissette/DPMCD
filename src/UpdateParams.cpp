@@ -142,7 +142,7 @@ double UpdateAlpha(NumericVector b) {
   //   pst_shape = prior_shape + num_comps - 1;
   //   pst_rate = prior_rate - sum_logs;
   //   alpha = R::rgamma(pst_shape, 1.0/pst_rate);
-  // return alpha;
+  return alpha;
 }
 
 
